@@ -1,2 +1,10 @@
-# dummy-project
-just a place to try out various things... no real code resides here
+# sample-app
+
+Just a place to try out various things... nothing real resides here.
+
+
+## Getting started
+
+```bash
+brew install pre-commit
+```

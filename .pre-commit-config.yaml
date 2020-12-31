@@ -1,0 +1,39 @@
+default_stages: [push]
+repos:
+  # code formatter
+  - repo: https://github.com/python/black
+    rev: stable
+    hooks:
+      - id: black
+
+  # linter / code formatter
+  - repo: https://github.com/asottile/reorder_python_imports
+    rev: v2.3.6
+    hooks:
+      - id: reorder-python-imports
+
+  # misc static analyzers
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v3.2.0
+    hooks:
+      - id: check-merge-conflict
+      - id: debug-statements
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-yaml
+      - id: check-added-large-files
+
+  # linter / static analyzer
+  - repo: https://gitlab.com/pycqa/flake8
+    rev: 3.8.4
+    hooks:
+      - id: flake8
+        args: [--max-line-length=100]
+
+  # security static analyzer
+  - repo: https://github.com/Lucas-C/pre-commit-hooks-bandit
+    rev: v1.0.4
+    hooks:
+      - id: python-bandit-vulnerability-check
+        args: [-l, --recursive, -x, tests]
+        files: .py$
