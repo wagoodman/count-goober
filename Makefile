@@ -17,7 +17,7 @@ all: lint test build-image test-image
 
 bootstrap: $(TOOLS_DIR)/bin/grype $(VENV_DIR)/bin/poetry $(VENV_DIR)/bin/pre-commit
 
-$(TOOLS_DIR): 
+$(TOOLS_DIR):
 	mkdir -p $(TOOLS_DIR)
 
 $(TOOLS_DIR)/bin/grype: $(TOOLS_DIR)
@@ -35,11 +35,11 @@ $(VENV_DIR)/bin/pre-commit: $(VENV_DIR)/bin/activate
 	$(VENV_DIR)/bin/python3 -m pip install pre-commit
 
 .PHONY: test
-test: venv ## run all tests
+test: bootstrap ## run all tests
 	poetry run pytest -v
 
 .PHONY: lint
-lint: venv ## lint the source code and configuration
+lint: bootstrap ## lint the source code and configuration
 	pre-commit run --all-files --hook-stage push
 
 .PHONY: build-image
@@ -49,7 +49,7 @@ $(ID_FILE):
 	docker build --iidfile $(ID_FILE) .
 
 .PHONY: test-image
-test-image: $(ID_FILE)  ## test a built docker image
+test-image: bootstrap $(ID_FILE)  ## test a built docker image
 	grype docker:$(shell cat $(ID_FILE)) --fail-on medium
 
 publish: ## publish a docker image
