@@ -57,8 +57,8 @@ repos:
       stages: [push]
 
   # dockerfile linter
-  - repo: https://github.com/petalmd/dockerfile-pre-commit
-    rev: 'v1.0'
+  - repo: https://git.shore.co.il/nimrod/docker-pre-commit.git
+    rev: v0.3.0
     hooks:
-    - id: dockerlint
-      stages: [push]
+      - id: hadolint
+        stages: [push]
