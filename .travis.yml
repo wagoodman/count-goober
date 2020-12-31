@@ -24,7 +24,7 @@ jobs:
       script: make test
     # build & test the asset
     - stage: Build Image
-      script: 
+      script:
       - make build-image
       - make test-image
     # TODO: publish your asset
