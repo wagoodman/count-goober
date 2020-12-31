@@ -1,26 +1,45 @@
 ORG_NAME = myorg
 APP_NAME = sample-app
+
+# tools directory and paths
+TOOLS_DIR = ./.tmp
+VENV_DIR=$(TOOLS_DIR)/venv
+VENV_ACTIVATE=. $(VENV_DIR)/bin/activate
+
+# ensure we are preferring local tools over system tools
+PATH := $(TOOLS_DIR)/bin:$(VENV_DIR)/bin:$(PATH)
+SHELL := env PATH=$(PATH) /bin/bash
+
+# when building a docker image we don't want to tag it until it has been tested, this ID file contains the identity of the built image
 ID_FILE = /tmp/$(ORG_NAME)-$(APP_NAME)-docker-build-id
 
 all: lint test build-image test-image
 
-.PHONY: bootstrap
-bootstrap:
-	# install grype
-	grype || curl -sSfL https://raw.githubusercontent.com/anchore/grype/main/install.sh | sh -s --
+bootstrap: $(TOOLS_DIR)/bin/grype $(VENV_DIR)/bin/poetry $(VENV_DIR)/bin/pre-commit
 
-	# install poetry
-	poetry || curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python -
+$(TOOLS_DIR): 
+	mkdir -p $(TOOLS_DIR)
 
-	# install pre-commit
-	pre-commit || curl https://pre-commit.com/install-local.py | python -
+$(TOOLS_DIR)/bin/grype: $(TOOLS_DIR)
+	curl -sSfL https://raw.githubusercontent.com/anchore/grype/main/install.sh | sh -s -- -b $(TOOLS_DIR)/bin
+
+$(VENV_DIR)/bin/activate: $(TOOLS_DIR) pyproject.toml
+	test -d $(VENV_DIR) || virtualenv -p python3 $(VENV_DIR)
+	python3 -m pip install -U pip poetry pre-commit
+	touch $(VENV_DIR)/bin/activate
+
+$(VENV_DIR)/bin/poetry: $(VENV_DIR)/bin/activate
+	$(VENV_DIR)/bin/python3 -m pip install poetry
+
+$(VENV_DIR)/bin/pre-commit: $(VENV_DIR)/bin/activate
+	$(VENV_DIR)/bin/python3 -m pip install pre-commit
 
 .PHONY: test
-test: ## run all tests
+test: venv ## run all tests
 	poetry run pytest -v
 
 .PHONY: lint
-lint: ## lint the source code and configuration
+lint: venv ## lint the source code and configuration
 	pre-commit run --all-files --hook-stage push
 
 .PHONY: build-image

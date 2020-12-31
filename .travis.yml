@@ -11,11 +11,8 @@ stages:
   - Quality
   - Build
 
-before_install:
-  - pip install poetry
-
 install:
-  - poetry install
+  - make bootstrap
 
 jobs:
   include:
