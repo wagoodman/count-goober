@@ -1,0 +1,33 @@
+cache:
+  directories:
+  - /tools
+
+language: python
+dist: xenial
+python:
+  - "3.7"
+
+stages:
+  - Quality
+  - Build
+
+before_install:
+  - pip install poetry
+
+install:
+  - poetry install
+
+jobs:
+  include:
+    # test code quality and correctness
+    - stage: Quality
+      name: lint
+      script: make lint
+    - name: test code
+      script: make test
+    # build & test the asset
+    - stage: Build Image
+      script: make build-image
+    - name: test image
+      script: make test-image
+    # TODO: publish your asset

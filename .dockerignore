@@ -1,0 +1,5 @@
+.pre-commit-config.yaml
+.travis.yaml
+.gitignore
+.git
+Makefile

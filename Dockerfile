@@ -19,6 +19,7 @@ RUN python -m venv /venv
 
 # install dependencies
 COPY pyproject.toml poetry.lock ./
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 RUN poetry export -f requirements.txt | /venv/bin/pip install -r /dev/stdin
 
 # copy application code and build a wheel
