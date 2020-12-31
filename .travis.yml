@@ -1,6 +1,6 @@
 cache:
   directories:
-  - /tools
+  - ./.tmp
 
 language: python
 dist: xenial
