@@ -4,7 +4,7 @@ jobs:
   build:
     working_directory: /app
     docker:
-      - image: docker:20.10.1-git
+      - image: cimg/base:2020.01
     steps:
       - checkout
 
