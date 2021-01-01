@@ -11,10 +11,7 @@ env:
 cache:
   directories:
     - /tmp/grype
-
-# install grype
-install:
-  - curl -sSfL https://raw.githubusercontent.com/anchore/grype/main/install.sh | sh -s -- -b /usr/local/bin
+    - $HOME/.local/bin
 
 jobs:
   include:
@@ -23,6 +20,10 @@ jobs:
     # 2. build & test the asset
     - stage: Build Assets
       name: Build & Test Docker Image
+      before_script:
+        # install grype and make available on path
+        - mkdir -p $HOME/.local/bin && curl -sSfL https://raw.githubusercontent.com/anchore/grype/main/install.sh | sh -s -- -b $HOME/.local/bin
+        - export PATH=$HOME/.local/bin:$PATH
       script:
         # build the image
         - docker build myorg/myimage:latest .
