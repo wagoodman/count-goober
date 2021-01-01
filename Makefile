@@ -26,14 +26,13 @@ $(TOOLS_DIR)/bin/grype: $(TOOLS_DIR)
 
 $(VENV_DIR)/bin/activate: $(TOOLS_DIR) pyproject.toml
 	test -d $(VENV_DIR) || virtualenv -p python3 $(VENV_DIR)
-	python3 -m pip install -U pip poetry pre-commit
-	touch $(VENV_DIR)/bin/activate
+	$(VENV_DIR)/bin/pip --version || $(VENV_DIR)/bin/python3 -m pip install -U pip
 
 $(VENV_DIR)/bin/poetry: $(VENV_DIR)/bin/activate
-	$(VENV_DIR)/bin/python3 -m pip install poetry
+	$(VENV_DIR)/bin/poetry --version || $(VENV_DIR)/bin/python3 -m pip install poetry
 
 $(VENV_DIR)/bin/pre-commit: $(VENV_DIR)/bin/activate
-	$(VENV_DIR)/bin/python3 -m pip install pre-commit
+	$(VENV_DIR)/bin/pre-commit --version || $(VENV_DIR)/bin/python3 -m pip install pre-commit
 
 .PHONY: test
 test: $(TOOLS_DIR) ## run all tests
