@@ -1,6 +1,7 @@
 cache:
   directories:
-  - ./.tmp
+    - ./.tmp
+    - $HOME/.cache/pre-commit
 
 language: python
 dist: xenial
@@ -18,13 +19,16 @@ jobs:
   include:
     # test code quality and correctness
     - stage: Quality
-      name: lint
+      name: Run Static Analysis
       script: make lint
-    - name: test code
+
+    - name: Run Unit Tests
       script: make test
+
     # build & test the asset
     - stage: Build Image
+      name: Build & Test Docker Image
       script:
-      - make build-image
-      - make test-image
+        - make build-image
+        - make test-image
     # TODO: publish your asset

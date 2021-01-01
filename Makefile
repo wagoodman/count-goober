@@ -41,7 +41,7 @@ test: $(TOOLS_DIR) ## run all tests
 
 .PHONY: lint
 lint: $(TOOLS_DIR) ## lint the source code and configuration
-	pre-commit run --all-files --hook-stage push
+	pre-commit run --all-files
 
 .PHONY: build-image
 build-image: clean $(ID_FILE) ## build a docker image
