@@ -39,12 +39,8 @@ test: $(TOOLS_DIR) ## run all tests
 	poetry run pytest -v
 
 .PHONY: lint
-lint: $(TOOLS_DIR) ## lint the source code and configuration based on the current changes in git
-	pre-commit run
-
-.PHONY: lint-all
-lint-all: $(TOOLS_DIR) ## lint all the source code and configuration
-	pre-commit run --all-files
+lint: $(TOOLS_DIR) ## lint the source code and configuration
+	pre-commit run  --all-files
 
 .PHONY: build-image
 build-image: clean $(ID_FILE) ## build a docker image
@@ -54,7 +50,7 @@ $(ID_FILE):
 
 .PHONY: test-image
 test-image: $(TOOLS_DIR) $(ID_FILE)  ## test a built docker image
-	grype -vv docker:$(shell cat $(ID_FILE)) --fail-on medium
+	grype -v docker:$(shell cat $(ID_FILE)) --fail-on medium
 
 publish: ## publish a docker image
 	docker tag $(shell cat $(ID_FILE)) $(ORG_NAME)/$(APP_NAME):latest
