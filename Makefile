@@ -16,6 +16,7 @@ ID_FILE = /tmp/$(ORG_NAME)-$(APP_NAME)-docker-build-id
 all: lint test build-image test-image
 
 bootstrap: $(TOOLS_DIR)/bin/grype $(VENV_DIR)/bin/poetry $(VENV_DIR)/bin/pre-commit $(TOOLS_DIR)/bin/hadolint
+	chmod 755 $(TOOLS_DIR)/bin/hadolint
 	pre-commit install-hooks
 
 $(TOOLS_DIR):
