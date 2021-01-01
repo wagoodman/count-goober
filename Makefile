@@ -59,7 +59,7 @@ publish: ## publish a docker image
 
 .PHONY: clean
 clean:
-	rm $(ID_FILE)
+	rm -f $(ID_FILE)
 
 .PHONY: help
 help:
