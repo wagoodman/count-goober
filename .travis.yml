@@ -1,34 +1,34 @@
-cache:
-  directories:
-    - ./.tmp
-    - $HOME/.cache/pre-commit
-
 language: python
 dist: xenial
 python:
   - "3.7"
 
-stages:
-  - Code Quality Checks
-  - Build Assets
+# explicitly configure grype to cache the DB to a known directory
+env:
+  - GRYPE_DB_CACHE_DIR=/tmp/grype
 
+# cache the grype directory so scans within the same-day will leverage the same vulnerability DB (better performance).
+cache:
+  directories:
+    - /tmp/grype
+
+# install grype
 install:
-  - make bootstrap
+  - curl -sSfL https://raw.githubusercontent.com/anchore/grype/main/install.sh | sh -s -- -b /usr/local/bin
 
 jobs:
   include:
-    # test code quality and correctness
-    - stage: Code Quality Checks
-      name: Run Static Analysis
-      script: make lint
+    # 1. ... run linting, unit tests, etc., in previous stages...
 
-    - name: Run Unit Tests
-      script: make test
-
-    # build & test the asset
+    # 2. build & test the asset
     - stage: Build Assets
       name: Build & Test Docker Image
       script:
-        - make build-image
-        - make test-image
-    # TODO: publish your asset
+        # build the image
+        - docker build myorg/myimage:latest .
+
+        # scan the image for any known vulnerabilities; fail if any critical vulnerabilities are found
+        - grype -v myorg/myimage:latest --fail-on critical
+
+        # publish the image
+        # - docker push myorg/myimage:latest ...
