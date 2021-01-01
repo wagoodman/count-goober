@@ -22,11 +22,12 @@ $(TOOLS_DIR):
 	mkdir -p $(TOOLS_DIR)
 
 $(TOOLS_DIR)/bin/hadolint: $(TOOLS_DIR)
-	@if [ "$(shell uname)" = "Darwin" ]; then \
+	if [ "$(shell uname)" = "Darwin" ]; then \
 		curl -o $(TOOLS_DIR)/bin/hadolint -sSfL https://github.com/hadolint/hadolint/releases/download/v1.19.0/hadolint-Darwin-x86_64; \
 	else \
 		curl -o $(TOOLS_DIR)/bin/hadolint -sSfL https://github.com/hadolint/hadolint/releases/download/v1.19.0/hadolint-Linux-x86_64; \
 	fi
+	@chmod 755 $(TOOLS_DIR)/bin/hadolint
 
 $(TOOLS_DIR)/bin/grype: $(TOOLS_DIR)
 	curl -sSfL https://raw.githubusercontent.com/anchore/grype/main/install.sh | sh -s -- -b $(TOOLS_DIR)/bin
