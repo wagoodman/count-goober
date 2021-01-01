@@ -15,11 +15,18 @@ ID_FILE = /tmp/$(ORG_NAME)-$(APP_NAME)-docker-build-id
 
 all: lint test build-image test-image
 
-bootstrap: $(TOOLS_DIR)/bin/grype $(VENV_DIR)/bin/poetry $(VENV_DIR)/bin/pre-commit
+bootstrap: $(TOOLS_DIR)/bin/grype $(VENV_DIR)/bin/poetry $(VENV_DIR)/bin/pre-commit $(TOOLS_DIR)/bin/hadolint
 	pre-commit install-hooks
 
 $(TOOLS_DIR):
 	mkdir -p $(TOOLS_DIR)
+
+$(TOOLS_DIR)/bin/hadolint: $(TOOLS_DIR)
+	@if [ "$(shell uname)" = "Darwin" ]; then \
+		curl -o $(TOOLS_DIR)/bin/hadolint -sSfL https://github.com/hadolint/hadolint/releases/download/v1.19.0/hadolint-Darwin-x86_64; \
+	else \
+		curl -o $(TOOLS_DIR)/bin/hadolint -sSfL https://github.com/hadolint/hadolint/releases/download/v1.19.0/hadolint-Linux-x86_64; \
+	fi
 
 $(TOOLS_DIR)/bin/grype: $(TOOLS_DIR)
 	curl -sSfL https://raw.githubusercontent.com/anchore/grype/main/install.sh | sh -s -- -b $(TOOLS_DIR)/bin

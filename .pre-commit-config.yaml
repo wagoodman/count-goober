@@ -56,7 +56,7 @@ repos:
 
 
   # dockerfile linter
-  - repo: https://git.shore.co.il/nimrod/docker-pre-commit.git
-    rev: v0.3.0
+  - repo: https://github.com/jas-on/pre-commit-hadolint
+    rev: 1.0.1
     hooks:
       - id: hadolint
