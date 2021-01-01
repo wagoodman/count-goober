@@ -36,11 +36,11 @@ $(VENV_DIR)/bin/pre-commit: $(VENV_DIR)/bin/activate
 	$(VENV_DIR)/bin/python3 -m pip install pre-commit
 
 .PHONY: test
-test: bootstrap ## run all tests
+test: $(TOOLS_DIR) ## run all tests
 	poetry run pytest -v
 
 .PHONY: lint
-lint: bootstrap ## lint the source code and configuration
+lint: $(TOOLS_DIR) ## lint the source code and configuration
 	pre-commit run --all-files --hook-stage push
 
 .PHONY: build-image
@@ -50,8 +50,8 @@ $(ID_FILE):
 	docker build --iidfile $(ID_FILE) .
 
 .PHONY: test-image
-test-image: bootstrap $(ID_FILE)  ## test a built docker image
-	grype docker:$(shell cat $(ID_FILE)) --fail-on medium
+test-image: $(TOOLS_DIR) $(ID_FILE)  ## test a built docker image
+	grype -vv docker:$(shell cat $(ID_FILE)) --fail-on medium
 
 publish: ## publish a docker image
 	docker tag $(shell cat $(ID_FILE)) $(ORG_NAME)/$(APP_NAME):latest
