@@ -26,7 +26,7 @@ jobs:
         - export PATH=$HOME/.local/bin:$PATH
       script:
         # build the image
-        - docker build myorg/myimage:latest .
+        - docker build -t myorg/myimage:latest .
 
         # scan the image for any known vulnerabilities; fail if any critical vulnerabilities are found
         - grype -v myorg/myimage:latest --fail-on critical
