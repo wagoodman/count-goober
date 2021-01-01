@@ -18,7 +18,7 @@ install:
 jobs:
   include:
     # test code quality and correctness
-    - stage: Code Quality
+    - stage: Code Quality Checks
       name: Run Static Analysis
       script: make lint
 
