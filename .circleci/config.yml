@@ -26,7 +26,7 @@ jobs:
           command: |
             docker build -t myorg/myimage:latest .
 
-      # run grype using a previously cached vulnerability database
+      # run grype using a previously cached vulnerability database (also downloads the latest vulnerability DB)
       - run:
           name: Test Docker Image
           environment:
