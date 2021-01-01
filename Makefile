@@ -39,7 +39,11 @@ test: $(TOOLS_DIR) ## run all tests
 	poetry run pytest -v
 
 .PHONY: lint
-lint: $(TOOLS_DIR) ## lint the source code and configuration
+lint: $(TOOLS_DIR) ## lint the source code and configuration based on the current changes in git
+	pre-commit run
+
+.PHONY: lint-all
+lint-all: $(TOOLS_DIR) ## lint all the source code and configuration
 	pre-commit run --all-files
 
 .PHONY: build-image
