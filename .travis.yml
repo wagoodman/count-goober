@@ -20,9 +20,10 @@ jobs:
     # 2. build & test the asset
     - name: Build & Test Docker Image
       install:
-        # install grype and make available on path
-        - mkdir -p $HOME/.local/bin && curl -sSfL https://raw.githubusercontent.com/anchore/grype/main/install.sh | sh -s -- -b $HOME/.local/bin
+        # install grype (or use cached installation) and make available on path
         - export PATH=$HOME/.local/bin:$PATH
+        - grype version || mkdir -p $HOME/.local/bin && curl -sSfL https://raw.githubusercontent.com/anchore/grype/main/install.sh | sh -s -- -b $HOME/.local/bin
+
       script:
         # build the image
         - docker build -t myorg/myimage:latest .

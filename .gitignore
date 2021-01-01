@@ -51,3 +51,4 @@ MANIFEST
 .venv*/
 
 .tmp/
+.mypy_cache/

@@ -1,0 +1,43 @@
+version: 2.1
+
+jobs:
+  build:
+    working_directory: /app
+    docker:
+      - image: docker:20.10.1-git
+    steps:
+      - checkout
+
+      - setup_remote_docker
+
+      # restore any grype cache (binary and vulnerability DB)
+      - restore_cache:
+          keys:
+            - grype-cache
+
+      # install grype
+      - run:
+          name: Install dependencies
+          command: |
+            mkdir -p $HOME/.local/bin
+            grype version || curl -sSfL https://raw.githubusercontent.com/anchore/grype/main/install.sh | sh -s -- -b $HOME/.local/bin
+
+      - run:
+          name: Build Docker Image
+          command: |
+            docker build -t myorg/myimage:latest .
+
+      # run grype using a previously cached vulnerability database
+      - run:
+          name: Test Docker Image
+          environment:
+            GRYPE_DB_CACHE_DIR: /tmp/grype
+          command: |
+            grype -v myorg/myimage:latest --fail-on critical
+
+      # cache the grype bin and vulnerability DB for future pipeline runs
+      - save_cache:
+          key: grype-cache
+          paths:
+            - $HOME/.local/bin
+            - /tmp/grype
