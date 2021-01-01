@@ -18,8 +18,7 @@ jobs:
     # 1. ... run linting, unit tests, etc., in previous stages...
 
     # 2. build & test the asset
-    - stage: Build Assets
-      name: Build & Test Docker Image
+    - name: Build & Test Docker Image
       before_script:
         # install grype and make available on path
         - mkdir -p $HOME/.local/bin && curl -sSfL https://raw.githubusercontent.com/anchore/grype/main/install.sh | sh -s -- -b $HOME/.local/bin
