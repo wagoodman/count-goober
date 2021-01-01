@@ -9,8 +9,8 @@ python:
   - "3.7"
 
 stages:
-  - Quality
-  - Build
+  - Code Quality Checks
+  - Build Assets
 
 install:
   - make bootstrap
@@ -18,7 +18,7 @@ install:
 jobs:
   include:
     # test code quality and correctness
-    - stage: Quality
+    - stage: Code Quality
       name: Run Static Analysis
       script: make lint
 
@@ -26,7 +26,7 @@ jobs:
       script: make test
 
     # build & test the asset
-    - stage: Build Image
+    - stage: Build Assets
       name: Build & Test Docker Image
       script:
         - make build-image
