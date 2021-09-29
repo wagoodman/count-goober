@@ -4,7 +4,7 @@ set -ue -o pipefail
 mkdir -p assets
 
 # capture current configuration for reproducibility
-env > assets/config.env
+# env > assets/config.env
 
 # prep-the-fake assets ... ;)
 echo "assets fetched and built!"
