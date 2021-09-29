@@ -1,5 +1,5 @@
 ORG_NAME = myorg
-APP_NAME = sample-app
+APP_NAME = count-goober
 
 # tools directory and paths
 TOOLS_DIR = ./.tmp

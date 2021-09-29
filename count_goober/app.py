@@ -5,7 +5,7 @@ import nltk  # type: ignore
 from num2words import num2words  # type: ignore
 from word2number import w2n  # type: ignore
 
-from sample_app.fib import fibonacci_number
+from count_goober.fib import fibonacci_number
 
 
 def replace_numbers(text: str) -> str:

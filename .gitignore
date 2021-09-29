@@ -1,3 +1,9 @@
+/cache
+*.tar
+/image
+config.env
+assets
+
 # Temporary and binary files
 *~
 *.py[cod]
