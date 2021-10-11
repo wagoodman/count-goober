@@ -9,7 +9,7 @@ include = ["assets/**/*"]
 python = "^3.8"
 word2number = "^1.1"
 num2words = "^0.5.10"
-nltk = "^3.6.3"
+nltk = "^3.6.5"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"
